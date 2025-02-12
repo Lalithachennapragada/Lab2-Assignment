@@ -36,10 +36,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker Image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/my-java-app:latest .
+        run: docker build -t ${{ secrets.lalithasri11 }}/my-java-app:latest .
 
       - name: Push Docker Image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/my-java-app:latest
+        run: docker push ${{ secrets.lalithasri11 }}/my-java-app:latest
 
       - name: Print Message
         run: echo "Hi, I am Lalitha from COSC 1209 class"
