@@ -2,39 +2,38 @@ name: Java CI/CD with Gradle and Docker
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [ master ]
   pull_request:
-    branches:
-      - main
-      - master
+    branches: [ master ]
 
 jobs:
   build-java:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: 17
 
-      - name: Grant execute permission for Gradle
-        run: chmod +x gradlew
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
 
-      - name: Build Java Project with Gradle
-        run: ./gradlew build
+    - name: Build with Gradle
+      run: ./gradlew build
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Echo Message
+      run: echo "Hi, I am from COSC 1209 class"
 
-      - name: Build Docker Image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/my-jav
+    - name: Build and Push Docker Image
+      uses: mr-smithers-excellent/docker-build-push@v4
+      with:
+        image: ${{ secrets.DOCKER_USERNAME }}/my-java-app
+        tags: latest
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
